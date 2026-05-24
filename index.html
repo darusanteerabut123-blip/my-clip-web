@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThePingParty - เบอร์ 4 พรรคพิง</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-blue: #0052cc;
+            --light-blue: #00f2fe;
+            --primary-yellow: #ffd700;
+            --dark-bg: #0b132b;
+            --card-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* 🎇 เอฟเฟกต์แสงไฟวิบวับตอนเข้าเว็บ (Intro Flash Screen) */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #0f172a, #020617);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        .flashing-glow {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 0 0 30px var(--light-blue), inset 0 0 20px var(--primary-yellow);
+            animation: neonPulse 0.4s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .flashing-glow img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                box-shadow: 0 0 20px var(--light-blue), 0 0 40px var(--primary-blue), inset 0 0 10px var(--primary-yellow);
+                transform: scale(0.96);
+            }
+            100% {
+                box-shadow: 0 0 40px var(--primary-yellow), 0 0 70px #f59e0b, inset 0 0 20px var(--light-blue);
+                transform: scale(1.04);
+            }
+        }
+
+        .click-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--light-blue);
+            animation: textBlink 0.8s infinite;
+        }
+
+        @keyframes textBlink {
+            50% { opacity: 0.3; }
+        }
+
+        /* 💻 โครงสร้างหน้าเว็บหลัก */
+        .main-wrapper {
+            background: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #3a506b 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5px;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .school-badge-main {
+            width: 110px;
+            height: 110px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+        }
+
+        .party-name-title {
+            font-size: 46px;
+            font-weight: 700;
+            background: linear-gradient(to right, #00f2fe, #ffd700, #00f2fe);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 3s linear infinite;
+            margin-bottom: 5px;
+        }
+
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+
+        .number-badge-giant {
+            display: inline-block;
+            background: linear-gradient(145deg, #ffd700, #b59410);
+            color: #000;
+            font-size: 32px;
+            font-weight: 800;
+            padding: 5px 35px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            margin-top: 10px;
+            border: 2px solid #fff;
+        }
+
+        .grid-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 40px;
+        }
+
+        /* 👑 การ์ดประธานนักเรียนเด่นสุดตรงกลาง */
+        .president-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 242, 254, 0.15), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+        }
+
+        .card:hover::before { left: 100%; }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.25);
+            border-color: var(--light-blue);
+        }
+
+        .card-president {
+            width: 320px;
+            border: 2.5px solid var(--primary-yellow);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
+        }
+
+        .card-president:hover {
+            box-shadow: 0 20px 45px rgba(255, 215, 0, 0.35);
+            border-color: #fff;
+        }
+
+        .role-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .role-president { background: linear-gradient(90deg, #ffd700, #ea580c); color: #fff; }
+        .role-member { background: linear-gradient(90deg, #0052cc, var(--light-blue)); color: #fff; }
+
+        .img-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-president .img-container {
+            width: 190px;
+            height: 190px;
+            border-color: var(--primary-yellow);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .name-thai {
+            font-size: 19px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .card-president .name-thai { font-size: 22px; }
+
+        .slogan-text {
+            font-size: 13px;
+            color: #cbd5e1;
+            font-weight: 300;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* 👥 จัดเรียงลูกทีม */
+        .committee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        /* ✨ เอฟเฟกต์ละอองไฟเด้งๆ ด้านหลัง */
+        .particle-effect {
+            position: absolute;
+            pointer-events: none;
+            background: var(--light-blue);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatUp 4s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100px) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .party-name-title { font-size: 34px; }
+            .number-badge-giant { font-size: 26px; }
+            .card-president { width: 100%; max-width: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay" onclick="startWebsite()">
+        <div class="flashing-glow">
+            <img src="1002507756.jpg" alt="ตราโรงเรียนเทศบาล 2">
+        </div>
+        <div class="click-text">👉 กดตรงไหนก็ได้เพื่อเข้าสู่เว็บไซต์ 👈</div>
+    </div>
+
+    <div class="main-wrapper">
+        <header>
+            <img class="school-badge-main" src="1002507756.jpg" alt="โรงเรียนเทศบาล ๒ พระยาศรีสุนทรโวหาร">
+            <h1 class="party-name-title">ThePingParty (พรรคพิง)</h1>
+            <div><span class="number-badge-giant">เบอร์ 4</span></div>
+        </header>
+
+        <div class="grid-container">
+            <div class="president-section">
+                <div class="card card-president">
+                    <span class="role-tag role-president">👑 ผู้สมัครประธานนักเรียน</span>
+                    <div class="img-container">
+                        <img src="1002507757.jpg" alt="ดรุสัณฑ์ ธีระบุตร">
+                    </div>
+                    <div class="name-thai">ดรุสัณฑ์ ธีระบุตร</div>
+                    <div class="slogan-text">"ทำงานโปร่งใส มีใจรักกิจกรรม ยุติธรรมซื่อตรง<br>เรามาเพื่อเปลี่ยน ไม่ใช่แค่เป็น!"</div>
+                </div>
+            </div>
+
+            <div class="committee-grid">
+                
+                <div class="card">
+                    <span class="role-tag role-member">🌟 รองประธานนักเรียน</span>
+                    <div class="img-container">
+                        <img src="1002507758.jpg" alt="คีรีภัทร์ คดีธรรม">
+                    </div>
+                    <div class="name-thai">คีรีภัทร์ คดีธรรม</div>
+                    <div class="slogan-text">พร้อมสนับสนุนและขับเคลื่อนงานสภานักเรียนร่วมกับทีมอย่างเต็มกำลังความสามารถ</div>
+                </div>
+
+                <div class="card">
+                    <span class="role-tag role-member">📢 หัวหน้าฝ่ายประชาสัมพันธ์</span>
+                    <div class="img-container">
+                        <img src="1002507762.jpg" alt="วณิชยา ทองเอิบ">
+                    </div>
+                    <div class="name-thai">วณิชยา ทองเอิบ</div>
+                    <div class="slogan-text">กระจายข่าวสารรวดเร็ว เข้าถึงง่าย เป็นกระบอกเสียงที่โปร่งใสให้กับนักเรียนทุกคน</div>
+                </div>
+
+                <div class="card">
+                    <span class="role-tag role-member">⚖️ หัวหน้าฝ่ายระเบียบวินัย</span>
+                    <div class="img-container">
+                        <img src="1002507763.jpg" alt="กันติชา ปาหนองแปน">
+                    </div>
+                    <div class="name-thai">กันติชา ปาหนองแปน</div>
+                    <div class="slogan-text">ดูแลรักษาสิทธิและความเป็นธรรม สร้างสังคมโรงเรียนที่เคารพซึ่งกันและกันอย่างเท่าเทียม</div>
+                </div>
+
+                <div class="card">
+                    <span class="role-tag role-member">💻 หัวหน้าฝ่ายเทคโนโลยี</span>
+                    <div class="img-container">
+                        <img src="1002507764.jpg" alt="อมลวรรณ เฮียงหลี">
+                    </div>
+                    <div class="name-thai">อมลวรรณ เฮียงหลี</div>
+                    <div class="slogan-text">พัฒนาระบบดิจิทัล นำนวัตกรรมใหม่ๆ มาช่วยให้ชีวิตในโรงเรียนสะดวกและก้าวไกลยิ่งขึ้น</div>
+                </div>
+
+                <div class="card">
+                    <span class="role-tag role-member">⚽ หัวหน้าฝ่ายนันทนาการและกีฬา</span>
+                    <div class="img-container">
+                        <img src="1002507761.jpg" alt="กัปตัน กัมแก้ว">
+                    </div>
+                    <div class="name-thai">กัปตัน กัมแก้ว</div>
+                    <div class="slogan-text">สร้างสรรค์กิจกรรมผ่อนคลาย จัดการแข่งขันกีฬาเพื่อความสามัคคีและสนุกสนานในทุกระดับชั้น</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startWebsite() {
+            const overlay = document.getElementById('intro-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 800);
+
+            // เมื่อปลดล็อกหน้าจอเสร็จแล้ว ให้ระบบพ่นละอองไฟระยิบระยับขึ้นมาทันที
+            setInterval(createParticle, 150);
+        }
+
+        function createParticle() {
+            const container = document.querySelector('.main-wrapper');
+            const particle = document.createElement('div');
+            particle.classList.add('particle-effect');
+            
+            // ระบบสุ่มสีเด้งๆ ระหว่างสีฟ้าสะท้อนแสง และ สีทองเหลือง
+            const colors = ['#00f2fe', '#ffd700'];
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const size = Math.random() * 8 + 4;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = (window.scrollY + window.innerHeight - 50) + 'px';
+            
+            container.appendChild(particle);
+            
+            // ลบจุดเอฟเฟกต์ออกเมื่อลอยพ้นขอบเพื่อไม่ให้คอมอืด
+            setTimeout(() => {
+                particle.remove();
+            }, 4000);
+        }
+    </script>
+</body>
+  </html>
